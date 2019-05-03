@@ -1,7 +1,7 @@
 {
   "name": "recipe-api",
   "version": "1.0.0",
-  "description": "Backed for my recipe webapp",
+  "description": "Backend for my recipe webapp",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -12,5 +12,8 @@
     "body-parser": "^1.19.0",
     "express": "^4.16.4",
     "mongoose": "^5.5.5"
+  },
+  "devDependencies": {
+    "eslint": "^5.16.0"
   }
 }
