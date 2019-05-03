@@ -6,7 +6,7 @@ let Recipe = require("../models/recipeModel");
 router.get("/", (req, res) => {
 	Recipe.find({})
 		.then(result => {
-			if (!result) res.send("Nessuna ricetta disponibile nel database");
+			if (!result) res.send("No recipe stored in db.");
 			res.json(result)
 				.status(200)
 				.send();
