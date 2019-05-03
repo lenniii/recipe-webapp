@@ -1,6 +1,3 @@
-let Recipe = require("./models/recipeModel");
-let db = require("./db");
-
 let express = require("express");
 let recipesRoute = require("./routes/reciperHandler");
 let bodyParser = require("body-parser");
