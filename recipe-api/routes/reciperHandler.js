@@ -1,9 +1,13 @@
+/* eslint-disable no-console */
 let express = require("express");
 let router = express.Router();
+// eslint-disable-next-line no-unused-vars
 let db = require("../db");
 let Recipe = require("../models/recipeModel");
 
 router.get("/", (req, res) => {
+	//GET ALL RECIPES IN DB
+
 	Recipe.find({})
 		.then(result =>
 			res
@@ -15,60 +19,59 @@ router.get("/", (req, res) => {
 });
 
 router.post("/", (req, res) => {
-	let query = req.query;
-	console.log(req.body);
+	//ADD NEW RECIPE TO DB
 
+	let recipeObj = req.body; //Recipe Obj to add (in POST body)
+
+	// Fill newRecipe schema with data
 	let newRecipe = new Recipe({
-		title: query.title,
-		description: query.description,
-		imageURL: query.imageURL,
-		ingredient: query.ingredient,
-		prepDesc: query.prepDesc,
-		note: query.note
+		title: recipeObj.title,
+		description: recipeObj.description,
+		imageURL: recipeObj.imageURL,
+		ingredient: recipeObj.ingredient,
+		prepDesc: recipeObj.prepDesc,
+		note: recipeObj.note
 	});
-	Recipe.find({ title: query.title })
-		.then(result => {
-			if (result != 0) {
-				res.sendStatus(403);
-				return;
-			}
-			Recipe.create(newRecipe)
-				.then(() => {
-					res.sendStatus(200);
-					console.log("Inserted " + newRecipe);
-				})
-				.catch(err => {
-					console.error(err);
-					res.sendStatus(404);
-				});
+
+	//Save new recipe in db
+	Recipe.create(newRecipe)
+		.then(() => {
+			res.sendStatus(200);
+			console.log("Inserted " + newRecipe);
 		})
-		.catch(err => console.error(err));
+		.catch(err => {
+			console.error(err);
+			res.sendStatus(404);
+		});
 });
 
 router.delete("/:id", (req, res) => {
+	//DELETE RECIPE IN DB
 	let recipeID = req.params.id;
 	Recipe.findByIdAndDelete({ _id: recipeID })
 		.then(res.sendStatus(200))
 		.catch(err => {
 			console.error(err);
+			res.sendStatus(404);
 		});
 });
 
 router.put("/:id", (req, res) => {
+	//UPDATE A RECIPE IN DB
 	let recipeID = req.params.id;
-	let query = req.query;
+	let recipeObj = req.body; //Updated recipeObj
 
-	let newRecipe = new Recipe({
+	//Fill newRecipe
+	let updatedRecipe = new Recipe({
 		_id: recipeID,
-		title: query.title,
-		description: query.description,
-		imageURL: query.imageURL,
-		ingredient: query.ingredient,
-		prepDesc: query.prepDesc,
-		note: query.note
+		title: recipeObj.title,
+		description: recipeObj.description,
+		imageURL: recipeObj.imageURL,
+		ingredient: recipeObj.ingredient,
+		prepDesc: recipeObj.prepDesc,
+		note: recipeObj.note
 	});
-	console.log(newRecipe);
-	Recipe.findByIdAndUpdate({ _id: recipeID }, newRecipe)
+	Recipe.findByIdAndUpdate({ _id: recipeID }, updatedRecipe)
 		.then(res.sendStatus(200))
 		.catch(err => console.error(err));
 });

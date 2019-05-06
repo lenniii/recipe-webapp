@@ -5,7 +5,7 @@ let IngredientSchema = require("./ingredientModel");
 
 let RecipeSchema = new Schema({
 	_id: { type: Schema.Types.ObjectId, auto: true },
-	title: { type: String, required: true },
+	title: { type: String, required: true, unique: true },
 	description: { type: String, required: true, max: 100 },
 	cretatedAt: { type: Date, default: Date.now },
 	imageURL: { type: String, required: true },
